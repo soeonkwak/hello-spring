@@ -8,3 +8,8 @@
 2. static 변수와 static 함수
 3. new ArrayList<>() vs Arrays.asList()
 ```
+
+* 9/14 **회원 레포지토리 테스트 케이스 작성**
+```
+JUnit 단위 테스트 도구 사용
+```
