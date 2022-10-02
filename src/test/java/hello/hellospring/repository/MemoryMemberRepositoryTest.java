@@ -61,9 +61,9 @@ class MemoryMemberRepositoryTest { //다른데서 갖다 쓸게 아니니까 걍
 
     @Test
     public void findAll() {
-         Member member1 = new Member();
-         member1.setName("spring1");
-         repository.save(member1);
+        Member member1 = new Member();
+        member1.setName("spring1");
+        repository.save(member1);
 
         Member member2 = new Member();
         member2.setName("spring2");
