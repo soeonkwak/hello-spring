@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     @PostMapping("/members/new")
-    public String create(MemberForm form){ //전달받은 데이터가 스프링에 의해 MemberForm 에 매핑되어서 들어옴.
+    public String create(MemberForm form){ //전달받은 데이터가 스프링에 의해 MemberForm 에 매핑되어서 들어옴. (그럴러면 setter가 구현되어 있어야 함)
 
         Member member = new Member();
         member.setName(form.getName());
