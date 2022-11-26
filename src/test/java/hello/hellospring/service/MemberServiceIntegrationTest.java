@@ -2,43 +2,36 @@ package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.MemoryMemberRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class MemberServiceTest {
+@SpringBootTest //스프링 컨테이너와 테스트를 함께 실행함. 진짜 스프링을 띄워서 테스트함.
+@Transactional //테스트케이스에서 써주면 test 실행할때 트랜잭션이 실행, 테스트 검증하고, 테스트가 끝나면 롤백을 해줘서 db에 반영이 안돼서 계속 돌릴 수 있음.
+class MemberServiceIntegrationTest {
 
-    MemberService memberService;
-    MemoryMemberRepository repository;
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
 
-    @BeforeEach
-    public void beforeEach(){
-        repository = new MemoryMemberRepository();
-        memberService = new MemberService(repository);
-    }
-
-
-    @AfterEach
-    public void afterEach(){
-        repository.clearStore();
-    }
 
     @Test
+//    @Commit //DB에 반영되도록 하는 어노
     void 회원가입() {
 
         //given
         Member member = new Member();
-        member.setName("Spring");
+        member.setName("Spring JPA");
 
         //when
         Long savedId = memberService.join(member);
 
         //then
-        Member findMember = memberService.findOne(savedId).get();
+        Member findMember = memberRepository.findById(savedId).get();
         Assertions.assertThat(member.getName()).isEqualTo(findMember.getName());
 
     }

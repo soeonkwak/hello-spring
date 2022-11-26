@@ -1,26 +1,33 @@
 package hello.hellospring;
 
-import hello.hellospring.repository.JdbcMemberRepository;
-import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.MemoryMemberRepository;
+import hello.hellospring.repository.*;
 import hello.hellospring.service.MemberService;
 import hello.scantest.ScanTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 @Configuration
 public class SpringConfig {
 
-    private DataSource dataSource;
+//    private DataSource dataSource;
+//
+//    @Autowired
+//    public SpringConfig(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
+
+    //==============================JPA 사용시 주입====================================
+    private EntityManager em;
 
     @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public SpringConfig(EntityManager em) {
+        this.em = em;
     }
-
+    //==============================JPA 사용시 주입====================================
     @Bean
     public MemberService memberService(){
         return new MemberService(memberRepository());
@@ -42,15 +49,18 @@ public class SpringConfig {
      */
     @Bean
     public MemberRepository memberRepository(){
-        //return new MemoryMemberRepository();
-        return new JdbcMemberRepository(dataSource);
+//        return new MemoryMemberRepository();
+//        return new JdbcMemberRepository(dataSource);
+//        return new JdbcTemplateMemberRepository(dataSource);
+        return  new JpaMemberRepository(em);
     }
 
-    @Bean
+
     /**
      * 다른 패키지 내의 클래스를 빈으로 올릴 수 있는지 테스트.
      * HelloSpringApplication 클래스의 @SpringBootApplication 옵션으로 scantest 패키지를 스캔 범위로 지정해 놓는다.
      */
+    @Bean
     public ScanTest scanTest(){
         return new ScanTest();
     }
